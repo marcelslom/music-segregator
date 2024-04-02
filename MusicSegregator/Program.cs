@@ -10,7 +10,8 @@ namespace MusicSegregator
             if (result.Tag == ParserResultType.Parsed)
             {
                 var context = Context.From(result.Value);
-
+                var segregator = new Segregator(context);
+                segregator.Start();
             } 
             else
             {

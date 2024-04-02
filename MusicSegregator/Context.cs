@@ -11,12 +11,16 @@ namespace MusicSegregator
         private static readonly string DefaultDestinationFolderName = "music_segregated";
         private Context() { }
 
+        public readonly string NoArtistFolderName = "!NO_ARTIST";
+
+
         public string SourcePath { get; private set; }
         public string DestinationPath { get; private set; }
         public bool DeleteSourceFile { get;set; }
         public string FilenameSchema { get; set; }
         public bool RenameFile => !string.IsNullOrEmpty(FilenameSchema);
         public bool CreateLogFiles { get; private set; }
+        public bool SearchSubdirectories { get; private set; }
 
         public static Context From(IOptions options)
         {
@@ -33,7 +37,7 @@ namespace MusicSegregator
 
             if (string.IsNullOrWhiteSpace(options.DestinationPath))
             {
-                context.DestinationPath = Path.Combine(Environment.CurrentDirectory, DefaultDestinationFolderName);
+                context.DestinationPath = Path.Combine(context.SourcePath, DefaultDestinationFolderName);
             }
             else
             {
@@ -43,6 +47,7 @@ namespace MusicSegregator
             context.DeleteSourceFile = options.DeleteSourceFile;
             context.FilenameSchema = options.FilenameSchema;
             context.CreateLogFiles = options.CreateLogFiles;
+            context.SearchSubdirectories = options.SearchSubdirectories;
 
             return context;
         }

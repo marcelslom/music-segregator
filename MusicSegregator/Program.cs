@@ -9,7 +9,8 @@ namespace MusicSegregator
             var result = Parser.Default.ParseArguments<CliOptions>(args);
             if (result.Tag == ParserResultType.Parsed)
             {
-                Context.Instance.LoadOptions(result.Value);
+                var context = Context.From(result.Value);
+
             } 
             else
             {

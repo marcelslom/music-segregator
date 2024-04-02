@@ -21,6 +21,7 @@ namespace MusicSegregator
         public bool RenameFile => !string.IsNullOrEmpty(FilenameSchema);
         public bool CreateLogFiles { get; private set; }
         public bool SearchSubdirectories { get; private set; }
+        public string LogOutputDirectory { get; private set; }
 
         public static Context From(IOptions options)
         {
@@ -48,6 +49,7 @@ namespace MusicSegregator
             context.FilenameSchema = options.FilenameSchema;
             context.CreateLogFiles = options.CreateLogFiles;
             context.SearchSubdirectories = options.SearchSubdirectories;
+            context.LogOutputDirectory = options.LogOutputDirectory;
 
             return context;
         }

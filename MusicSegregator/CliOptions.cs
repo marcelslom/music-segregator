@@ -26,5 +26,8 @@ namespace MusicSegregator
 
         [Option('r', "search-subdirs", Required = false, Default = false, HelpText = "Set output to verbose messages.")]
         public bool SearchSubdirectories { get; set; }
+
+        [Option('o', "log-output", Required = false, HelpText = "Set output to verbose messages.")]
+        public string LogOutputDirectory { get; set; }
     }
 }

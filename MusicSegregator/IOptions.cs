@@ -14,5 +14,6 @@ namespace MusicSegregator
         string FilenameSchema { get; } //todo
         bool CreateLogFiles { get; } //todo
         bool SearchSubdirectories { get; }
+        string LogOutputDirectory { get; } //todo
     }
 }

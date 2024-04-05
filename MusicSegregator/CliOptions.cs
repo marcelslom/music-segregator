@@ -9,7 +9,7 @@ namespace MusicSegregator
 {
     internal class CliOptions : IOptions
     {
-        [Option('s', "source", Required = false, HelpText = "Path of source folder")]
+        [Value(0, MetaName = "source", Required = false, HelpText = "Path of source folder")]
         public string SourcePath { get; set; }
 
         [Option('d', "destination", Required = false, HelpText = "Set output to verbose messages.")]

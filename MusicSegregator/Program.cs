@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using NLog;
 
 namespace MusicSegregator
 {
@@ -10,6 +11,8 @@ namespace MusicSegregator
             if (result.Tag == ParserResultType.Parsed)
             {
                 var context = Context.From(result.Value);
+                LogManager.Configuration.Variables["infoEnabled"] = context.CreateLogFiles.ToString();
+                LogManager.Configuration.Variables["baseDir"] = context.SourcePath;
                 var segregator = new Segregator(context);
                 segregator.Start();
             } 

@@ -18,16 +18,27 @@ namespace MusicSegregator.Services
         internal void Start()
         {
             var searchMode = context.SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            logger.Info(context.SearchSubdirectories ? $"Scanning '{context.SourcePath} and subdirectories...'" : $"Scanning '{context.SourcePath}...'");
+            logger.Info(context.SearchSubdirectories ? $"Scanning '{context.SourcePath}' and subdirectories..." : $"Scanning '{context.SourcePath}'...");
             var files = Directory.GetFiles(context.SourcePath, "*.mp3", searchMode);
             logger.Info($"Found {files.Length} files to process.");
+            var successful = 0;
+            var errors = 0;
             foreach (var sourceFile in files)
             {
-                ProcessFile(sourceFile);
+                var result = ProcessFile(sourceFile);
+                if (result)
+                {
+                    successful++;
+                } 
+                else
+                {
+                    errors++;
+                }
             }
+            logger.Info(errors > 0 ? $"Processed {successful} files successfully. {errors} files failed. Check logs for more information." : $"Processed {successful} files successfully.");
         }
 
-        private void ProcessFile(string sourceFile)
+        private bool ProcessFile(string sourceFile)
         {
             try
             {
@@ -55,10 +66,12 @@ namespace MusicSegregator.Services
                     System.IO.File.Copy(sourceFile, destinationFile);
                     logger.Info($"Copied file from '{sourceFile}' to '{destinationFile}'");
                 }
+                return true;
             }
             catch (Exception e)
             {
                 logger.Error(e, $"An error occured while processing file {sourceFile}");
+                return false;
             }
         }
 

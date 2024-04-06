@@ -1,11 +1,7 @@
 ﻿using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MusicSegregator.Interfaces;
 
-namespace MusicSegregator
+namespace MusicSegregator.Options
 {
     internal class CliOptions : IOptions
     {

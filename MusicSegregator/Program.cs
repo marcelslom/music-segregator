@@ -1,4 +1,6 @@
 ﻿using CommandLine;
+using MusicSegregator.Options;
+using MusicSegregator.Services;
 using NLog;
 
 namespace MusicSegregator
@@ -13,7 +15,7 @@ namespace MusicSegregator
                 var context = Context.From(result.Value);
                 LogManager.Configuration.Variables["infoEnabled"] = context.CreateLogFiles.ToString();
                 LogManager.Configuration.Variables["baseDir"] = context.SourcePath;
-                var segregator = new Segregator(context);
+                var segregator = new SegregatorService(context);
                 segregator.Start();
             } 
             else

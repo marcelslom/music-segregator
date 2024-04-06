@@ -1,19 +1,14 @@
 ﻿using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TagLib;
 
-namespace MusicSegregator
+namespace MusicSegregator.Services
 {
-    internal class Segregator
+    internal class SegregatorService
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly Context context;
 
-        public Segregator(Context context)
+        public SegregatorService(Context context)
         {
             this.context = context;
         }
@@ -51,7 +46,7 @@ namespace MusicSegregator
                     System.IO.File.Copy(sourceFile, destinationFile);
                     logger.Info($"Copied file from '{sourceFile}' to '{destinationFile}'");
                 }
-            } 
+            }
             catch (Exception e)
             {
                 logger.Error($"An error occured while processing file {sourceFile}", e);

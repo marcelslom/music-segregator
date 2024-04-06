@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using MusicSegregator.Proxies;
+using NLog;
+using SmartFormat;
 using TagLib;
 
 namespace MusicSegregator.Services
@@ -29,13 +31,20 @@ namespace MusicSegregator.Services
         {
             try
             {
-                using var mp3 = TagLib.File.Create(sourceFile);
-                var tags = mp3.Tag;
+                using var mp3 = TagLib.File.Create(sourceFile) ?? throw new Exception($"Unable to process the file due to loading failure.");
+                var tags = mp3.Tag ?? throw new Exception($"Tags not found for processing.");
+                var tagsProxy = new TagsProxy(tags);
                 var filename = Path.GetFileName(sourceFile);
-                var destinationDir = GetDestinationDir(tags);
-                var uniqueFilename = GetUniqueFilename(destinationDir, filename);
+                if (context.RenameFile)
+                {
+                    filename = $"{Smart.Format(context.FilenameFormat, tagsProxy)}{Path.GetExtension(filename)}";
+                }
+                var destinationDir = GetDestinationDir(tagsProxy);
+                var destinationFilename = GetUniqueFilename(destinationDir, filename);
+                destinationDir = Sanitize(destinationDir, Path.GetInvalidPathChars());
+                destinationFilename = Sanitize(destinationFilename, Path.GetInvalidFileNameChars());
                 Directory.CreateDirectory(destinationDir);
-                var destinationFile = Path.Combine(destinationDir, uniqueFilename);
+                var destinationFile = Path.Combine(destinationDir, destinationFilename);
                 if (context.DeleteSourceFile)
                 {
                     System.IO.File.Move(sourceFile, destinationFile);
@@ -49,7 +58,7 @@ namespace MusicSegregator.Services
             }
             catch (Exception e)
             {
-                logger.Error($"An error occured while processing file {sourceFile}", e);
+                logger.Error(e, $"An error occured while processing file {sourceFile}");
             }
         }
 
@@ -77,18 +86,19 @@ namespace MusicSegregator.Services
             return uniqueFilename;
         }
 
-        private string GetDestinationDir(Tag tags)
+        private string GetDestinationDir(TagsProxy tags)
         {
-            var artist = string.Join(", ", tags.AlbumArtists).Trim();
-            if (string.IsNullOrEmpty(artist))
-            {
-                artist = context.NoArtistFolderName;
-            }
+            var artist = string.IsNullOrEmpty(tags.AlbumArtists) ? context.NoArtistFolderName: tags.AlbumArtists;
             if (string.IsNullOrEmpty(tags.Album))
             {
                 return Path.Combine(context.DestinationPath, artist);
             }
             return Path.Combine(context.DestinationPath, artist, tags.Album);
+        }
+
+        private static string Sanitize(string s, char[] invalid, char replacement = '_')
+        {
+            return string.Join(replacement, s.Split(invalid));
         }
     }
 }

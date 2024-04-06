@@ -6,8 +6,8 @@ namespace MusicSegregator.Interfaces
         string SourcePath { get; }
         string DestinationPath { get; }
         bool DeleteSourceFile { get; }
-        string FilenameSchema { get; } //todo
-        bool CreateLogFiles { get; } //todo
+        string FilenameFormat { get; }
+        bool CreateLogFiles { get; }
         bool SearchSubdirectories { get; }
     }
 }

@@ -13,8 +13,8 @@ namespace MusicSegregator
         public string SourcePath { get; private set; }
         public string DestinationPath { get; private set; }
         public bool DeleteSourceFile { get;set; }
-        public string FilenameSchema { get; set; }
-        public bool RenameFile => !string.IsNullOrEmpty(FilenameSchema);
+        public string FilenameFormat { get; set; }
+        public bool RenameFile => !string.IsNullOrEmpty(FilenameFormat);
         public bool CreateLogFiles { get; private set; }
         public bool SearchSubdirectories { get; private set; }
 
@@ -41,7 +41,7 @@ namespace MusicSegregator
             }
 
             context.DeleteSourceFile = options.DeleteSourceFile;
-            context.FilenameSchema = options.FilenameSchema;
+            context.FilenameFormat = options.FilenameFormat;
             context.CreateLogFiles = options.CreateLogFiles;
             context.SearchSubdirectories = options.SearchSubdirectories;
 

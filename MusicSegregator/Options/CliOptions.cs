@@ -14,8 +14,8 @@ namespace MusicSegregator.Options
         [Option('m', "move-files", Required = false, Default = false, HelpText = "Set output to verbose messages.")]
         public bool DeleteSourceFile { get; set; }
 
-        [Option('f', "filename-schema", Required = false, HelpText = "Set output to verbose messages.")]
-        public string FilenameSchema { get; set; }
+        [Option('f', "filename-format", Required = false, HelpText = "Set output to verbose messages.")]
+        public string FilenameFormat { get; set; }
 
         [Option('l', "log", Required = false, Default = false, HelpText = "Set output to verbose messages.")]
         public bool CreateLogFiles { get; set; }

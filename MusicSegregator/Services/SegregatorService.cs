@@ -1,6 +1,7 @@
 ﻿using MusicSegregator.Proxies;
 using NLog;
 using SmartFormat;
+using System.Diagnostics;
 using TagLib;
 
 namespace MusicSegregator.Services
@@ -17,25 +18,32 @@ namespace MusicSegregator.Services
 
         internal void Start()
         {
-            var searchMode = context.SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            logger.Info(context.SearchSubdirectories ? $"Scanning '{context.SourcePath}' and subdirectories..." : $"Scanning '{context.SourcePath}'...");
-            var files = Directory.GetFiles(context.SourcePath, "*.mp3", searchMode);
-            logger.Info($"Found {files.Length} files to process.");
-            var successful = 0;
-            var errors = 0;
-            foreach (var sourceFile in files)
+            try
             {
-                var result = ProcessFile(sourceFile);
-                if (result)
+                var searchMode = context.SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+                logger.Info(context.SearchSubdirectories ? $"Scanning '{context.SourcePath}' and subdirectories..." : $"Scanning '{context.SourcePath}'...");
+                var files = Directory.GetFiles(context.SourcePath, "*.mp3", searchMode);
+                logger.Info($"Found {files.Length} files to process.");
+                var successful = 0;
+                var errors = 0;
+                foreach (var sourceFile in files)
                 {
-                    successful++;
-                } 
-                else
-                {
-                    errors++;
+                    var result = ProcessFile(sourceFile);
+                    if (result)
+                    {
+                        successful++;
+                    } 
+                    else
+                    {
+                        errors++;
+                    }
                 }
+                logger.Info(errors > 0 ? $"Processed {successful} files successfully. {errors} files failed. Check logs for more information." : $"Processed {successful} files successfully.");
             }
-            logger.Info(errors > 0 ? $"Processed {successful} files successfully. {errors} files failed. Check logs for more information." : $"Processed {successful} files successfully.");
+            catch (Exception e)
+            {
+                logger.Error(e, $"An error occured while executing Music Segregator Service, check logs for more information.");
+            }
         }
 
         private bool ProcessFile(string sourceFile)

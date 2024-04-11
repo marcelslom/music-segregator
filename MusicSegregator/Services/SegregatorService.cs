@@ -101,7 +101,11 @@ namespace MusicSegregator.Services
 
         private string GetDestinationDir(TagsProxy tags)
         {
-            var artist = string.IsNullOrEmpty(tags.AlbumArtists) ? context.NoArtistFolderName: tags.AlbumArtists;
+            var artist = string.IsNullOrEmpty(tags.AlbumArtists) ? tags.Performers : tags.AlbumArtists;
+            if (string.IsNullOrEmpty(artist))
+            {
+                artist = context.NoArtistFolderName;
+            }
             if (string.IsNullOrEmpty(tags.Album))
             {
                 return Path.Combine(context.DestinationPath, artist);

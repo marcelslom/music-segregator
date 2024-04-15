@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using CommandLine.Text;
 using MusicSegregator.Options;
 using MusicSegregator.Services;
 using NLog;
@@ -9,7 +10,8 @@ namespace MusicSegregator
     {
         static void Main(string[] args)
         {
-            var result = Parser.Default.ParseArguments<CliOptions>(args);
+            var parser = new Parser(with => with.HelpWriter = null);
+            var result = parser.ParseArguments<CliOptions>(args);
             if (result.Tag == ParserResultType.Parsed)
             {
                 var context = Context.From(result.Value);
@@ -20,8 +22,43 @@ namespace MusicSegregator
             } 
             else
             {
-                //todo handle parsing error
+                DisplayHelp(result);
             }
+        }
+
+        private static List<string> postOptionsLines =
+            [
+            "Parameters available for file renaming:",
+            "  AlbumArtists",
+            "  Performers",
+            "  Composers",
+            "  Genres",
+            "  Title",
+            "  Album",
+            "  Year",
+            "  Track",
+            "  TrackCount",
+            "  Disc",
+            "  DiscCount",
+            "  InitialKey",
+            "  BeatsPerMinute"
+            ];
+
+        private static void DisplayHelp<T>(ParserResult<T> result)
+        {
+            HelpText helpText = null;
+            if (result.Errors.IsVersion())
+                helpText = HelpText.AutoBuild(result);
+            else
+            {
+                helpText = HelpText.AutoBuild(result, h =>
+                {
+                    h.AddNewLineBetweenHelpSections = true;
+                    h.AddPostOptionsLines(postOptionsLines);
+                    return h;
+                });
+            };
+            Console.WriteLine(helpText);
         }
     }
 }

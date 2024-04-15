@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MusicSegregator": {
+      "commandName": "Project",
+      "commandLineArgs": "-x --xd"
+    }
+  }
+}

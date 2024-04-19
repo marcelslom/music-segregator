@@ -30,7 +30,7 @@ namespace MusicSegregator.Options
             new Example("Simple usage (process current folder)", new CliOptions()),
             new Example("Simple usage with custom destination folder", new CliOptions {DestinationPath = @"C:\Music\Sorted"}),
             new Example("Rename files during copying", new CliOptions {FilenameFormat = "{Track} - {Title}"}),
-            new Example(@"Move sorted files from 'Unsorted' and its subfolders to ""Sorted"" folder and create log file in ""C:\Music\Unsorted\logs""", new CliOptions 
+            new Example(@"Move sorted files from 'Unsorted' and its subfolders to ""Sorted"" folder and create log file in ""C:\Music\Unsorted\logs\""", new CliOptions 
             {
                 SourcePath = @"C:\Music\Unsorted", 
                 DestinationPath = @"C:\Music\Sorted", 

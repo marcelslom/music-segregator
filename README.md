@@ -15,13 +15,14 @@ Music Segregator is a C# program that organizes MP3 files based on their ID3 tag
 
 To use MP3 Sorter, follow these steps:
 
-1. **Download**: Download the latest release from the [Releases](https://github.com/marcelslom/music-segregator/releases) page as a ZIP archive.
-2. **Extract**: Unzip the downloaded archive to a location of your choice.
-3. **Open Terminal**: Open a terminal window and navigate to the folder where you extracted the files.
-4. **Execute Program**:
+1. Download the latest release from the [Releases](https://github.com/marcelslom/music-segregator/releases) page.
+2. Unzip the downloaded archive.
+3. Open a terminal window and navigate to the folder where you extracted the files.
+4. Execute Program:
     - Run `.\musicseg` in the terminal if you're using Windows.
     - Alternatively, you can add the folder containing the executable (`musicseg.exe`) to your system's PATH to run it from any location in the terminal.
 
+### Arguments
 
 ```
 musicseg [options] [source]

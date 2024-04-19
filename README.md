@@ -13,7 +13,7 @@ Music Segregator is a C# program that organizes MP3 files based on their ID3 tag
 
 ## Usage
 
-To use MP3 Sorter, follow these steps:
+To use Music Segregator, follow these steps:
 
 1. Download the latest release from the [Releases](https://github.com/marcelslom/music-segregator/releases) page.
 2. Unzip the downloaded archive.

@@ -114,11 +114,18 @@ namespace MusicSegregator.Services
             {
                 artist = context.NoArtistFolderName;
             }
-            if (string.IsNullOrEmpty(tags.Album))
-            {
-                return Path.Combine(context.DestinationPath, artist);
-            }
-            return Path.Combine(context.DestinationPath, artist, tags.Album);
+
+            artist = SanitizeSlash(artist);
+            var album = SanitizeSlash(tags.Album);
+
+            return string.IsNullOrEmpty(album)
+                ? Path.Combine(context.DestinationPath, artist)
+                : Path.Combine(context.DestinationPath, artist, album);
+        }
+
+        private static string SanitizeSlash(string input)
+        {
+            return input.Replace("/", "_").Replace(@"\", "_");
         }
 
         private static string Sanitize(string s, char[] invalid, char replacement = '_')
